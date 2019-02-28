@@ -24,7 +24,8 @@
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
     "mongojs": "^2.6.0",
-    "mongoose": "^5.4.15",
+    "mongoose": "^5.4.16",
     "request": "^2.88.0"
-  }
+  },
+  "devDependencies": {}
 }
