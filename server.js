@@ -10,7 +10,6 @@ var Articles = require("./articles.js")
 
 var app = express();
 
-
 mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 
 var databaseUrl = "scraper";
@@ -34,19 +33,57 @@ db.on("error", function(error) {
     console.log("Database Error:", error);
 })
 
+// Story.findOne({ title: 'Casino Royale' }).
+//   populate('author').
+//   exec(function (err, story) {
+//     if (err) return handleError(err);
+//     console.log('The author is %s', story.author.name);
+//     // prints "The author is Ian Fleming"
+//   });
+
+
 app.get("/", function(req, res) {
-    db.scrapedData.find({}, function(err, data) {
+    Articles.find({}, function(err, data) {
         if (err) throw err;
-        res.render("index", {scrapedData:data});
+        res.render("index", {articles:data});
     });
+    // db.articles.find({}, function(err, data) {
+    //     if (err) throw err;
+    //     res.render("index", {articles:data});
+    // });
 });
+
+// app.get("/populated", function(req, res) {
+//     // Using our Library model, "find" every library in our db and populate them with any associated books
+//     db.Library.find({})
+//       // Specify that we want to populate the retrieved libraries with any associated books
+//       .populate("books")
+//       .then(function(dbLibrary) {
+//         // If any Libraries are found, send them to the client with any associated Books
+//         res.json(dbLibrary);
+//       })
+//       .catch(function(err) {
+//         // If an error occurs, send it back to the client
+//         res.json(err);
+//       });
+//   });
+
+app.get("/populated", function(req, res) {
+    Articles.find({}).populate("comments").then(function(dbArticles) {
+        res.json(dbArticles);
+    })
+    .catch(function(err) {
+        res.json(err);
+    })
+})
+
 
 app.post("/submit", function(req, res) {
     console.log('submit', req.body.comment)
-    Comment.create({ comment: req.body.comment })
+    Comment.create({ comments: req.body.comment })
     .then(function(dbComment){
         console.log("it works!" + req.body.comment)
-        db.comment.findOneAndUpdate({}, {$push: {comments: dbComment._id} }, {new: true});
+        Comment.findOneAndUpdate({}, {$push: {comments: dbComment._id} }, {new: true});
     }).then(function(dbScrapedData){
         res.json(dbComment);
     }).catch(function(err) {
@@ -56,7 +93,7 @@ app.post("/submit", function(req, res) {
 });
 
 app.get("/clear", function(req, res) {
-    db.scrapedData.remove({}, function(err, data) {
+    Articles.remove({}, function(err, data) {
         if (err) throw err;
         res.redirect("/");
     });
