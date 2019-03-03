@@ -4,6 +4,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var exphbs = require("express-handlebars");
 var mongoose = require("mongoose")
+var PORT = process.env.PORT || 3000;
 
 var Comment = require("./comment.js")
 var Articles = require("./articles.js")
@@ -41,8 +42,12 @@ db.on("error", function(error) {
 //     // prints "The author is Ian Fleming"
 //   });
 
-
 app.get("/", function(req, res) {
+    res.json(path.join(_dirname, "./index.html"))
+})
+
+
+app.get("/home", function(req, res) {
     Articles.find({}, function(err, data) {
         if (err) throw err;
         res.render("index", {articles:data});
@@ -111,7 +116,7 @@ app.post("/submit", function(req, res) {
 app.get("/clear", function(req, res) {
     Articles.remove({}, function(err, data) {
         if (err) throw err;
-        res.redirect("/");
+        res.redirect("/home");
     });
 });
 
@@ -152,11 +157,11 @@ app.get("/scrape", function(req, res) {
         //     res.json(err);
         // });
     })
-    res.redirect("/")
+    res.redirect("/home")
     });
     
 });
 
-app.listen(3000, function() {
+app.listen(PORT, function() {
     console.log("App running on port 3000!")
 })
