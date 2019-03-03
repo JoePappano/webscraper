@@ -42,12 +42,12 @@ db.on("error", function(error) {
 //     // prints "The author is Ian Fleming"
 //   });
 
+// app.get("/", function(req, res) {
+//     res.json(path.join(_dirname, "./index.html"))
+// })
+
+
 app.get("/", function(req, res) {
-    res.json(path.join(_dirname, "./index.html"))
-})
-
-
-app.get("/home", function(req, res) {
     Articles.find({}, function(err, data) {
         if (err) throw err;
         res.render("index", {articles:data});
@@ -116,7 +116,7 @@ app.post("/submit", function(req, res) {
 app.get("/clear", function(req, res) {
     Articles.remove({}, function(err, data) {
         if (err) throw err;
-        res.redirect("/home");
+        res.redirect("/");
     });
 });
 
@@ -157,7 +157,7 @@ app.get("/scrape", function(req, res) {
         //     res.json(err);
         // });
     })
-    res.redirect("/home")
+    res.redirect("/")
     });
     
 });
