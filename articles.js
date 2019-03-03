@@ -1,9 +1,9 @@
 var mongoose = require("mongoose");
-// var CommentSchema = require("./comment.js")
+// var commentSchema = require("./comment.js")
 
 var Schema = mongoose.Schema;
 
-// var CommentSchema = new Schema({
+// var commentSchema = new Schema({
 //     comment: String
 // });
 
@@ -11,6 +11,10 @@ var ArticleSchema = new Schema({
     title: String,
     link: String,
     summary: String,
+    commentsArray: [{
+        type: Schema.Types.ObjectId,
+        ref: "comments"
+    }]
 });
 
 var Article = mongoose.model("Article", ArticleSchema);

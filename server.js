@@ -53,6 +53,19 @@ app.get("/", function(req, res) {
     // });
 });
 
+
+app.get("/view", function(req, res) {
+    Comment.find({}, function(err, data) {
+        if (err) throw err;
+        res.render("comments", {comments:data});
+    });
+    // db.articles.find({}, function(err, data) {
+    //     if (err) throw err;
+    //     res.render("index", {articles:data});
+    // });
+});
+
+
 // app.get("/populated", function(req, res) {
 //     // Using our Library model, "find" every library in our db and populate them with any associated books
 //     db.Library.find({})
@@ -80,12 +93,15 @@ app.get("/populated", function(req, res) {
 
 app.post("/submit", function(req, res) {
     console.log('submit', req.body.comment)
-    Comment.create({ comments: req.body.comment })
+    Comment.create({ 
+        comment: req.body.comment,
+     })
     .then(function(dbComment){
         console.log("it works!" + req.body.comment)
-        Comment.findOneAndUpdate({}, {$push: {comments: dbComment._id} }, {new: true});
+        res.redirect("/view")
+        Articles.findOneAndUpdate({}, {$push: {commentsArray: comment} }, {new: true});
     }).then(function(dbScrapedData){
-        res.json(dbComment);
+        res.redirect("/")
     }).catch(function(err) {
         // console.log('Something broke', err);
         res.json(err);
@@ -96,6 +112,14 @@ app.get("/clear", function(req, res) {
     Articles.remove({}, function(err, data) {
         if (err) throw err;
         res.redirect("/");
+    });
+});
+
+app.get("/clearComments", function(req, res) {
+    console.log("wowsers!")
+    Comment.remove({}, function(err, data) {
+        if (err) throw err;
+        res.redirect("/view");
     });
 });
 

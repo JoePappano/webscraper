@@ -2,17 +2,29 @@
     <form class="form-inline">
         <a class="btn btn-outline-success" type="button" href="/scrape">Scrape Articles</a>
         <a class="btn btn-sm btn-outline-secondary" type="button" href="/clear">Clear Articles</a>
+        
     </form>
 </nav>
 
 <div class="container">
     <div class="articles">
         {{#each articles}}
+
         <h3>Article: {{title}}</h3>
         <a href="http://nytimes.com{{link}}">Check out link here!</a>
         <p>Summary: {{summary}}</p>
+
+        {{!-- <form method="POST" action="/submit">
+            <div class="text-center">
+                <textarea style="width: 90%; height: 80px;" name="comment" id="commentId" placeholder="Type Your Comment Here"></textarea>
+            </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form> --}}
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        <button name="id" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
             Comment on this Article
         </button>
 
