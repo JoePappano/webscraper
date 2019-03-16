@@ -11,7 +11,7 @@ var Articles = require("./articles.js")
 
 var app = express();
 
-mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
+mongoose.connect( process.env.MONGODB_URI || "mongodb://localhost/scraper");
 
 var databaseUrl = "scraper";
 var collections = ["scrapedData", 'comments'];
